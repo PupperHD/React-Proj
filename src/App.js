@@ -1,45 +1,32 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import logo from './logo.svg';
 import './App.css';
-import Button from './components/elements/button/button';
-import Image from './components/elements/image/dog-image';
-import Api from './components/lib/fetch/api';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Home from './pages/home';
+import About from './pages/about';
 
 class App extends Component {
-    fetchApi(method, url, payload, body) {
-        Api({method, url, payload, body}).then((res) => {
-            console.log(res);
-            if (res.status === 'success') {
-                const element = <Image
-                    src={res.message}
-                    className='some-image'
-                />;
-                ReactDOM.render(element, document.querySelector('.image-holder'));
-            } else {
-                const element = <p>Image not found</p>;
-                ReactDOM.render(element, document.querySelector('.image-holder'));
-            }
-        }).catch((err) => {
-            console.log(err);
-        });
-    }
-
     render() {
         return (
             <div className="App">
-                <header id='app-core' className="App-header">
-                    <div className="container">
-                        <Button
-                            text='Submit'
-                            type='submit'
-                            onClick={() => this.fetchApi('GET', 'https://dog.ceo/api/breeds/image/random', {someKey: 'hi there'}, {})}
-                            className='some-button'
-                        />
-                    </div>
-                    <div className='image-holder'>
-                    </div>
-                </header>
+                <div className="nav">
+                    <Router>
+                        <div>
+                            <ul>
+                                <li>
+                                    <Link to="/">Home</Link>
+                                </li>
+                                <li>
+                                    <Link to="/about">About</Link>
+                                </li>
+                            </ul>
+
+                            <hr />
+
+                            <Route exact path="/" component={Home} />
+                            <Route path="/about" component={About} />
+                        </div>
+                    </Router>
+                </div>
             </div>
         );
     }
